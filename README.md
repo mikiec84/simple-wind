@@ -19,17 +19,19 @@
 ## nope
 
 -[ ] make it no lopsided : (
--[ ] webgl rewrite https://blog.mapbox.com/how-i-built-a-wind-map-with-webgl-b63022b5537f
 -[ ] sync rotation speed with time 
+-[ ] webgl rewrite https://github.com/mapbox/webgl-wind https://blog.mapbox.com/how-i-built-a-wind-map-with-webgl-b63022b5537f
+-[ ] color based on velocity https://anvaka.github.io/fieldplay
 
 Fancier transitions
-
 - https://inspirit.github.io/jsfeat/#opticalflowlk
 - https://github.com/anvaka/oflow
 - https://en.wikipedia.org/wiki/Lucas%E2%80%93Kanade_method
 
 
 ## download data
+
+
 
 set up grib2json
 
@@ -40,9 +42,25 @@ cd grib2json
 mvn package
 ```
 
+Note from https://github.com/cambecc/earth
+
+Weather data is produced by the Global Forecast System (GFS), operated by the US National Weather Service. Forecasts are produced four times daily and made available for download from NOMADS. The files are in GRIB2 format and contain over 300 records. We need only a few of these records to visualize wind data at a particular isobar. The following commands download the 1000 hPa wind vectors and convert them to JSON format using the grib2json utility:
+
+```
+YYYYMMDD=<a date, for example: 20140101>
+
+curl "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs.pl?file=gfs.t00z.pgrb2.1p00.f000&lev_10_m_above_ground=on&var_UGRD=on&var_VGRD=on&dir=%2Fgfs.${YYYYMMDD}00" -o 
+gfs.t00z.pgrb2.1p00.f000
+
+grib2json -d -n -o current-wind-surface-level-gfs-1.0.json gfs.t00z.pgrb2.1p00.f000
+cp current-wind-surface-level-gfs-1.0.json
+```
+
+
 download files
 
 http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_1p00.pl
+
 
 ```
 mkdir raw-data

@@ -37,9 +37,9 @@ function init(){
   d3.geoPath().context(ctx0).projection(proj)
     (topojson.mesh(earth, earth.objects.coastline_50m))
   ctx0.strokeStyle = "rgba(255,0,255,.4)"
-  ctx0.stroke()
+  // ctx0.stroke()
 
-  var s = 5
+  var s = 10
   console.time('parse gribs')
   frames = d3.nestBy(points, d => d.date).map(d => {
     var frame = makeGrid(width, height, s, proj, d)
@@ -93,7 +93,7 @@ function init(){
     if (isLastFrame) gt = 1 // no animation on last frame
 
     var time = d3.interpolate(frame0.date, frame1.date)(gt)
-    timeSel.text(d3.timeFormat('%Y-%m-%d %H:%M')(time))
+    // timeSel.text(d3.timeFormat('%Y-%m-%d %H:%M')(time))
     // timeSel.text([frame0.index, frame1.index, Math.round(gt*1000)/1000])
 
 

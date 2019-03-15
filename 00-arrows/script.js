@@ -10,14 +10,16 @@ d3.loadData(`../raw-data/${times[0]}.json`, 'earth.json', (err, res) => {
   var c = d3.conventions({
     sel, 
     margin: {top: 0, bottom: 0, left: 0, right: 0},
-    layers: 'scc'
+    layers: 'scc',
+    width: window.innerWidth,
+    height: window.innerHeight,
   })
 
   ;[svg, ctx0, ctxBot] = c.layers
   var {width, height} = c
 
-  extent = [[360 -83.028,28.2],[360 -75.59,46.2]]
-  proj = d3.geoTransverseMercator().rotate([-84, 0, -170])
+  extent = [[0,90],[360,-90]]
+  proj = d3.geoNaturalEarth1().rotate([90, 0])
     .fitSize([c.width, c.height], {type: "MultiPoint", coordinates: extent})    
 
   extent = [[0, c.height], [c.width, 0]]
@@ -26,7 +28,7 @@ d3.loadData(`../raw-data/${times[0]}.json`, 'earth.json', (err, res) => {
 
   d3.geoPath().context(ctx0).projection(proj)
     (topojson.mesh(earth, earth.objects.coastline_50m))
-  ctx0.strokeStyle = "rgba(255,255,0,.4)"
+  ctx0.strokeStyle = "rgba(0,0,0,.4)"
   ctx0.stroke()
 
   // rounded extent
@@ -117,22 +119,17 @@ d3.loadData(`../raw-data/${times[0]}.json`, 'earth.json', (err, res) => {
     ctxBot.fillRect(0, 0, width, height)
     ctxBot.globalCompositeOperation = 'source-over'
 
-    var opacityScale = d3.scaleLinear().domain([0, 10]).range([.15, 1])
+    var opacityScale = d3.scaleLinear().domain([0, 10]).range([.15, .85])
     d3.nestBy(dots, d => Math.round(d.mag)).forEach(bucket => {
       ctxBot.beginPath()
       bucket.forEach(d => {
         ctxBot.moveTo(d.px, d.py)
         ctxBot.lineTo(d.px + d.u, d.py + -d.v)
       })
-      ctxBot.strokeStyle = `rgba(255,255,255,${opacityScale(bucket.key)})`
+      ctxBot.strokeStyle = `rgba(0,0,0,${opacityScale(bucket.key)})`
       ctxBot.stroke()
     })
   })
-
-
-
-
-
 
 
   // svg.appendMany('g', points)
