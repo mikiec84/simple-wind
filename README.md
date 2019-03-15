@@ -31,8 +31,6 @@ Fancier transitions
 
 ## download data
 
-
-
 set up grib2json
 
 ```
